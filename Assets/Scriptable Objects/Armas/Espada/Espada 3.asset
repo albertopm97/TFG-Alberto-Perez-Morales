@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43bddb70de8dcc342bf455f9ff3dffdb, type: 3}
+  m_Name: Espada 3
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 3105506370786945720, guid: 30c4b88f4c556f84387dd2650663b8dd, type: 3}
+  damage: 12
+  rapidez: 15
+  enfriamiento: 1
+  perforacion: 3
+  nivel: 3
+  prefabSiguienteNivel: {fileID: 0}
+  nombre: Espada nivel 3
+  descripcion: "Aumenta el da\xF1o y da\xF1a un objetivo extra"
+  icono: {fileID: 1152584782, guid: 06e01ba7c2547ce45964a2dcab49ed7a, type: 3}

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8459ddae54e1e4740ba57932195a6ee3, type: 3}
+  m_Name: Mago
+  m_EditorClassIdentifier: 
+  armaInicial: {fileID: 4782096685699834070, guid: 0dea283c60357324a9dc99007e4eb80e, type: 3}
+  vidaMaxima: 100
+  recuperacion: 1
+  velocidadMovimiento: 4
+  poder: 1
+  rapidezProyectil: 0
+  imanObjetos: 1.6

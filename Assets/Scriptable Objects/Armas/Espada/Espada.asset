@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43bddb70de8dcc342bf455f9ff3dffdb, type: 3}
+  m_Name: Espada
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 3105506370786945720, guid: 34cdaa3095d7c91458c83c1c2fd1bb9d, type: 3}
+  damage: 5
+  rapidez: 13
+  enfriamiento: 1
+  perforacion: 1
+  nivel: 1
+  prefabSiguienteNivel: {fileID: 3024705426620585037, guid: 60915fa030acce748a67fe7a4ccc2d3f, type: 3}
+  nombre: Espada
+  descripcion: Lanza espadas en la direccion en la que mira el jugador
+  icono: {fileID: 1152584782, guid: 06e01ba7c2547ce45964a2dcab49ed7a, type: 3}

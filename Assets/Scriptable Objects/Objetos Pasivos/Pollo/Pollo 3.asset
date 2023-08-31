@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db881dae9b1fb543bd88987cc2b34c4, type: 3}
+  m_Name: Pollo 3
+  m_EditorClassIdentifier: 
+  multiplicador: 200
+  nivel: 3
+  prefabSiguienteNivel: {fileID: 6207279702112864362, guid: b4fc15d7468317849a75a1a3ba5d7cad, type: 3}
+  nombre: Pollo nivel 3
+  descripcion: Aumenta el poder de ataque en un 200%
+  icono: {fileID: 21300000, guid: b0851162516b6244f9ab7679cdb66512, type: 3}

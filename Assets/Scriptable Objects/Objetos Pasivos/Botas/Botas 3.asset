@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db881dae9b1fb543bd88987cc2b34c4, type: 3}
+  m_Name: Botas 3
+  m_EditorClassIdentifier: 
+  multiplicador: 75
+  nivel: 3
+  prefabSiguienteNivel: {fileID: 4388472424802894726, guid: 4287436cc8ab6154b8bb8fbbb1101e89, type: 3}
+  nombre: Botas nivel 3
+  descripcion: Aumenta la velocidad de movimiento en un 75%
+  icono: {fileID: -1149188109, guid: 06e01ba7c2547ce45964a2dcab49ed7a, type: 3}
