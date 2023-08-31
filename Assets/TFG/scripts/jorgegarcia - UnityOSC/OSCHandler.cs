@@ -103,6 +103,10 @@ public class OSCHandler : MonoBehaviour
 
         //CreateServer("AndroidPhone", 6666);
 
+
+		/*--------------------------------CODIGO TFG ------------------------------------------*/
+
+		//Creamos un cliente para comunicarnos con el servidor de supercollider 
         CreateClient("SuperCollider", IPAddress.Parse("127.0.0.1"), 57120);
     }
 

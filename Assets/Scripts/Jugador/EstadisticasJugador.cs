@@ -80,6 +80,13 @@ public class EstadisticasJugador : MonoBehaviour
         maxExperiencia = rangosNivel[0].incrementoMaxExperiencia;
 
         actualizarBarraHP();
+
+
+        /**--------------TFG------------**/
+
+        //Llamada para iniciar la musica al activarse este sript en el juego
+        float iniciarMusica = 1.0f;
+        OSCHandler.Instance.SendMessageToClient("SuperCollider", "/iniciarMusica", iniciarMusica);
     }
 
     void Update()
@@ -272,4 +279,11 @@ public class EstadisticasJugador : MonoBehaviour
 
         ranuraPasivo++;
     }
+
+    /*
+    private void OnDestroy()
+    {
+        float finalizarMusica = 1.0f;
+        OSCHandler.Instance.SendMessageToClient("SuperCollider", "/finalizarMusica", finalizarMusica);
+    }*/
 }
