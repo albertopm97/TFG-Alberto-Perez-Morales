@@ -148,6 +148,7 @@ public class EstadisticasJugador : MonoBehaviour
             sonidoLvUp.Play();
             nivel++;
             Debug.Log("LV UP");
+            OSCHandler.Instance.SendMessageToClient("SuperCollider", "/lvUp", nivel);
             experiencia -= maxExperiencia;
             
 
@@ -176,6 +177,9 @@ public class EstadisticasJugador : MonoBehaviour
         if (!esInvulnerable)
         {
             vidaActual -= dmg;
+
+            //Llamada para actualizar la vida actual en supercollider 
+            OSCHandler.Instance.SendMessageToClient("SuperCollider", "/cambioVidaActual", vidaActual);
 
             //Reiniciamos el temporizador de I-frames
             temporizadorInv = duracionInv;
@@ -225,6 +229,9 @@ public class EstadisticasJugador : MonoBehaviour
             }
 
             actualizarBarraHP();
+
+            //Llamada para actualizar la vida actual en supercollider 
+            OSCHandler.Instance.SendMessageToClient("SuperCollider", "/cambioVidaActual", vidaActual);
         }
     }
 
@@ -243,6 +250,9 @@ public class EstadisticasJugador : MonoBehaviour
             }
 
             actualizarBarraHP();
+
+            //Llamada para actualizar la vida actual en supercollider 
+            OSCHandler.Instance.SendMessageToClient("SuperCollider", "/cambioVidaActual", vidaActual);
         }
     }
 
@@ -279,11 +289,4 @@ public class EstadisticasJugador : MonoBehaviour
 
         ranuraPasivo++;
     }
-
-    /*
-    private void OnDestroy()
-    {
-        float finalizarMusica = 1.0f;
-        OSCHandler.Instance.SendMessageToClient("SuperCollider", "/finalizarMusica", finalizarMusica);
-    }*/
 }

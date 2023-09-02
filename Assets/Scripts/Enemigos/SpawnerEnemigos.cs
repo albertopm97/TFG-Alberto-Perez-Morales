@@ -38,6 +38,7 @@ public class SpawnerEnemigos : MonoBehaviour
     public float intervaloWave;
     public int maxEnemigosSimultaneos;
     public int enemigosActivos;
+    public int miniBossActivos;
     public bool maximoEnemigosAlcanzado = false; // true si hemos llegado al maximo de enemigos que puede haber en el mapa
 
     [Header("Posiciones de spawn")]
@@ -123,9 +124,20 @@ public class SpawnerEnemigos : MonoBehaviour
                     //elegimos un punto al azar de la lista de puntos y spawneamos al enemigo ahí
                     Instantiate(grupo.prefabEnemigo, jugador.position + puntosSpawn[Random.Range(0, puntosSpawn.Count - 1)].position, Quaternion.identity);
 
+                    //Si el enemigo spawneado es miniboss, hacemos llamada a supercollider
+                    if (grupo.prefabEnemigo.GetComponent<EstadisticasEnemigos>().estadisticas.EsMiniboss)
+                    {
+                        //Aumentamos el nº de minibosses activos
+                        miniBossActivos++;
+                        OSCHandler.Instance.SendMessageToClient("SuperCollider", "/cambioMinibosses", miniBossActivos);
+                    }
+
                     grupo.contadorSpawn++;
                     waves[waveActual].contadorSpawn++;
                     enemigosActivos++;
+
+                    //Llamada para actualizar los enemigos activos en supercollider al hacer spawn
+                    OSCHandler.Instance.SendMessageToClient("SuperCollider", "/cambioEnemigosActivos", enemigosActivos);
                 }
             }
         }
@@ -138,9 +150,24 @@ public class SpawnerEnemigos : MonoBehaviour
     }
 
     //funcion a llamar cuando se destruya un enemigo cualquiera para bajar el contador global
-    public void OnEnemyKilled()
+    public void OnEnemyKilled(bool miniboss)
     {
         enemigosActivos--;
+
+        //Llamada para actualizar los enemigos activos en supercollider al morir
+        OSCHandler.Instance.SendMessageToClient("SuperCollider", "/cambioEnemigosActivos", enemigosActivos);
+
+        //Si el enemigo que murió es miniboss restamos 1 al numero de bosses
+        if (miniboss)
+        {
+            miniBossActivos--;
+
+            //Si no quedan minibosses, mandamos a supercollider señal para quitar filtro de resonancia
+            if(miniBossActivos == 0)
+            {
+                OSCHandler.Instance.SendMessageToClient("SuperCollider", "/cambioMinibosses", miniBossActivos);
+            }
+        }
     }
 }
  

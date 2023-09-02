@@ -77,7 +77,7 @@ public class EstadisticasEnemigos : MonoBehaviour
         }
 
         SpawnerEnemigos spawner = FindObjectOfType<SpawnerEnemigos>();
-        spawner.OnEnemyKilled();
+        spawner.OnEnemyKilled(estadisticas.EsMiniboss);
     }
 
     void recolocarEnemigo()

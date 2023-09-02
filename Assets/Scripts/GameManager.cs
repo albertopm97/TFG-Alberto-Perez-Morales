@@ -81,6 +81,9 @@ public class GameManager : MonoBehaviour
                     tiempoCronoUI.text = "";
                     mostrarPantallaFinal();
                     loopJuego.Stop();
+
+                    //Mandamos mensaje de fin de música a supercollider
+                    OSCHandler.Instance.SendMessageToClient("SuperCollider", "/finalizarMusica", juegoFinalizado);
                 }
                 break;
 

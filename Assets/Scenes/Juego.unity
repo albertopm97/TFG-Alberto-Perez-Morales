@@ -572,6 +572,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2906792525206143616, guid: ba8aabd686ca1264eb206ecc57e76bba, type: 3}
+      propertyPath: maxEnemigosSimultaneos
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6199231648045439209, guid: ba8aabd686ca1264eb206ecc57e76bba, type: 3}
       propertyPath: m_Name
       value: PlayerParent
@@ -65472,35 +65476,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1d0e94673051354dbf069aa68e3c6c3, type: 3}
---- !u!1 &1948054499 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7598534957374732895, guid: ba8aabd686ca1264eb206ecc57e76bba, type: 3}
-  m_PrefabInstance: {fileID: 673418325}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1948054504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948054499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 909cc4f2458b80b478d4682fd7119ac5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1948054505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948054499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd49ecb420b82546be9f717ba17c972, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2066860781
 PrefabInstance:
   m_ObjectHideFlags: 0

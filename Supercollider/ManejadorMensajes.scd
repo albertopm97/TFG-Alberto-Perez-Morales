@@ -1,16 +1,117 @@
 (
+/*
+* Rutina asíncrona, encargada de iniciar la musica por partes, primero la percusión y luego la armonía
+*/
 ~r1 = Routine.new({
 
     //Iniciamos la percusión por partes, primero bombo y caja y por ultimo tom
-    ~patronBombo.play(~t, quant: 4);
-    ~patronCaja.play(~t, quant: 2);
+    ~patronBombo.play(~tGeneral, quant: 4);
+    ~patronCaja.play(~tGeneral, quant: 2);
     wait(5);
-    ~patronTom.play(~t);
-    wait(10);
-    ~arpegio.play(~t, quant: 1);
+    ~arpegio.play(~tGeneral, quant: 3);
 });
 
+/*
+* Funcion auxiliar para realizar un cambio en la música
+*/
+~cambiarMusica = {
 
+    ~patronBombo.stop;
+    ~patronCaja.stop;
+    ~arpegio.stop;
+
+    ~numMelodias = ~melodias.size;
+
+    //Si hay melodias sonando, adaptar su ritmo
+    if(~numMelodias != 0){
+        ~melodias.do{
+            arg item;
+
+            item.stop;
+        };
+
+        ~melodias = [];
+        for(0, ~numMelodias - 1){
+
+            ~melodias.add(~melodia.play(~tMelodia, quant: 4));
+        };
+    };
+
+    //Adaptar el ritmo de todos los patrones
+    ~patronBombo.play(~tGeneral, quant: 4);
+    ~patronCaja.play(~tGeneral, quant: 2);
+    ~arpegio.play(~tGeneral, quant: 1);
+};
+
+/*
+* Funcion para controlar la adaptación dinámica del ritmo de la musica en función
+* del número de enemigos activos
+*/
+~adaptarRitmo = {
+    arg numEnemigos; //Argumento pasado como parametro a la funcion
+
+
+    case
+    { (numEnemigos >= 0) && (numEnemigos < 5) && (~rangoRimoPrevio != 0)}{
+        ~tempo = 90/60;
+        ~rangoRimoPrevio = 0;
+        ~tGeneral = TempoClock.new(~tempo).permanent_(true);
+        ~tMelodia = TempoClock.new(~tempo/2).permanent_(true);
+        ~cambiarMusica.value();
+    }
+    {(numEnemigos >= 5) && (numEnemigos < 10) && (~rangoRimoPrevio != 1)}  {
+        ~tempo = 100/60;
+        ~rangoRimoPrevio = 1;
+        ~tGeneral = TempoClock.new(~tempo).permanent_(true);
+        ~tMelodia = TempoClock.new(~tempo/2).permanent_(true);
+        ~cambiarMusica.value();
+    }
+    {(numEnemigos >= 10) && (numEnemigos < 15) && (~rangoRimoPrevio != 2)} {
+        ~tempo = 110/60;
+        ~rangoRimoPrevio = 2;
+        ~tGeneral = TempoClock.new(~tempo).permanent_(true);
+        ~tMelodia = TempoClock.new(~tempo/2).permanent_(true);
+        ~cambiarMusica.value();
+    }
+    {(numEnemigos >= 15) && (numEnemigos < 20) && (~rangoRimoPrevio != 3)} {
+        ~tempo = 120/60;
+        ~rangoRimoPrevio = 3;
+        ~tGeneral = TempoClock.new(~tempo).permanent_(true);
+        ~tMelodia = TempoClock.new(~tempo/2).permanent_(true);
+        ~cambiarMusica.value();
+    };
+};
+
+/*
+* Funcion para controlar la adaptación dinámica del modo de la secuencia de acordes en función
+* del % de vida del jugador (modos mayores para +50% y menores para -50%)
+*/
+~adaptarModos = {
+    arg vidaActual; //Argumento pasado como parametro a la funcion
+
+
+    case
+    { (vidaActual >= 50) && (~rangoPrevioModo != 0)}{
+        ~generador.cambiarModoSecuencia('M');
+        ~prueba.inicializarArpegios(~generador.secuenciaGenerada);
+        ~rangoPrevioModo = 0;
+
+        ~prueba.tocarArpegio;
+        ~cambiarMusica.value();
+    }
+    { (vidaActual < 50) && (~rangoPrevioModo != 1)}{
+        ~generador.cambiarModoSecuencia('m');
+        ~prueba.inicializarArpegios(~generador.secuenciaGenerada);
+        ~rangoPrevioModo = 1;
+
+        ~prueba.tocarArpegio;
+        ~cambiarMusica.value();
+    };
+};
+
+/*
+* Manejador para la llamada de inicio de musica al comienzo del juego
+*/
 OSCdef.new(
     \iniciarMusica,             //Simbolo para identificar el manejador.
     {arg msg;
@@ -20,13 +121,17 @@ OSCdef.new(
         ~generador = GeneradorSecuencias();
         ~generador.inicializarDiccionarios();
         ~generador.inicializarGrafoTransiciones();
-        ~generador.generarSecuencia(50);
+        ~generador.generarSecuencia(20);
+
+        //Varible necesaria para gestionar los cambios de ritmo dinámicos
+        ~rangoRimoPrevio = 0;
+        ~rangoPrevioModo = 0;
 
         //Seleccionamos aleatoriamente una escala (do, re, mi, ... si)
         ~n = ['C', 'D', 'E', 'F', 'G', 'A', 'B'].choose;
 
         //Transformamos la secuencia generada de grados a notas de una escala concreta
-        ~generador.transformarSecuecia('A');
+        ~generador.transformarSecuecia(~n);
 
         //Inicializamos la clase generadora de acordes
         C.audio;
@@ -46,8 +151,9 @@ OSCdef.new(
         ~prueba.inicializarArpegios(~generador.secuenciaGenerada);
 
         //Inicializamos el reloj que controlara el tempo para sincronizar percusion y acordes
-        ~tempo = 100/60;
-        ~t = TempoClock.new(~tempo).permanent_(true);
+        ~tempo = 90/60;
+        ~tGeneral = TempoClock.new(~tempo).permanent_(true);
+        ~tMelodia = TempoClock.new(~tempo/2).permanent_(true);
 
         //inicializamos el patron que controla los arpegios
         ~prueba.tocarArpegio;
@@ -58,6 +164,13 @@ OSCdef.new(
         //Inicializamo la percusión
         ~prueba.tocarPercusion();
 
+        //Iniciamos patron de melodia
+        ~prueba.tocarMelodia();
+
+        //creamos un array vacio para almacenar todos los reproductores de las melodias e iniciamos la primera
+        ~melodias = [];
+
+        //Activamos la rutina que inicia la música
         ~r1.play;
     },
     '/iniciarMusica', //Mensaje a leer
@@ -65,6 +178,9 @@ OSCdef.new(
     57120  //Puerto para escuchar los mensajes (indicado en OSCHandler en Unity)
 );
 
+/*
+* Manejador para la llamada de fin de musica al finalizar el juego
+*/
 OSCdef.new(
     \finalizarMusica,             //Simbolo para identificar el manejador.
     {arg msg;
@@ -76,6 +192,67 @@ OSCdef.new(
         ~arpegio.stop;
     },
     '/finalizarMusica', //Mensaje a leer
+    nil,
+    57120  //Puerto para escuchar los mensajes (indicado en OSCHandler en Unity)
+);
+
+/*
+* Manejador para la llamada de cambio en los enemigos activos.
+* Usada para adaptar el ritmo de la música de forma dinámica en función del número de enemigos
+*/
+OSCdef.new(
+    \cambioEnemigosActivos,             //Simbolo para identificar el manejador.
+    {arg msg;
+        [msg].postln;
+
+        //Extraemos el valor pasado por mensaje
+        ~enemigosActivos = [msg][0][1].postln;
+
+        //Llamamos a la función que adapta el ritmo pasando como parametro el numero de enemigos
+        ~adaptarRitmo.value(~enemigosActivos);
+    },
+    '/cambioEnemigosActivos', //Mensaje a leer
+    nil,
+    57120  //Puerto para escuchar los mensajes (indicado en OSCHandler en Unity)
+);
+
+/*
+* Manejador para la llamada de cambio en la vida actual del jugador.
+* Usada para adaptar el modo de la secuencia de acordes entre mayor y menor de forma dinámica
+*/
+OSCdef.new(
+    \cambioVidaActual,             //Simbolo para identificar el manejador.
+    {arg msg;
+        [msg].postln;
+
+        //Extraemos el valor pasado por mensaje
+        ~vidaActual = [msg][0][1].postln;
+
+        //Llamamos a la función que adapta el ritmo pasando como parametro el numero de enemigos
+        ~adaptarModos.value(~vidaActual);
+    },
+    '/cambioVidaActual', //Mensaje a leer
+    nil,
+    57120  //Puerto para escuchar los mensajes (indicado en OSCHandler en Unity)
+);
+
+
+/*
+* Manejador para la llamada de cambio en la vida actual del jugador.
+* Usada para adaptar el modo de la secuencia de acordes entre mayor y menor de forma dinámica
+*/
+OSCdef.new(
+    \lvUp,             //Simbolo para identificar el manejador.
+    {arg msg;
+        [msg].postln;
+
+        //Extraemos el valor pasado por mensaje
+        ~nivel = [msg][0][1].postln;
+
+        //Llamamos a la función que adapta el ritmo pasando como parametro el numero de enemigos
+        ~melodias = ~melodias.add(~melodia.play(~tMelodia, quant: 4));
+    },
+    '/lvUp', //Mensaje a leer
     nil,
     57120  //Puerto para escuchar los mensajes (indicado en OSCHandler en Unity)
 );

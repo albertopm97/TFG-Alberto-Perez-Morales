@@ -19,4 +19,8 @@ public class ScriptableObjectEnemigos : ScriptableObject
     float damage;
     public float Damage { get => damage; private set => damage = value; }
 
+    [SerializeField]
+    bool esMiniboss;
+    public bool EsMiniboss { get => esMiniboss; private set => esMiniboss = value; }
+
 }

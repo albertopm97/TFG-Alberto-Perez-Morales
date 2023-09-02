@@ -561,6 +561,8 @@ GameObject:
   - component: {fileID: 2939080452221589213}
   - component: {fileID: 7554922034958757980}
   - component: {fileID: 4783090898288379387}
+  - component: {fileID: 8223120594185007924}
+  - component: {fileID: 4337184447332072057}
   m_Layer: 0
   m_Name: CameraFollow
   m_TagString: MainCamera
@@ -648,6 +650,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objetivo: {fileID: 1661631784009172739}
   offset: {x: 0, y: 0, z: -10}
+--- !u!114 &8223120594185007924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7598534957374732895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 909cc4f2458b80b478d4682fd7119ac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4337184447332072057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7598534957374732895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd49ecb420b82546be9f717ba17c972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &802993146139093123
 PrefabInstance:
   m_ObjectHideFlags: 0
