@@ -40,6 +40,7 @@
     //Adaptar el ritmo de todos los patrones
     ~patronBombo.play(~tGeneral, quant: 4);
     ~patronCaja.play(~tGeneral, quant: 2);
+
     ~arpegio.play(~tGeneral, quant: 1);
 };
 
@@ -109,6 +110,58 @@
     };
 };
 
+
+/*
+* Función para controlar la activación o desactivación del filtro de resonancia en cuando haya o no
+* algún mini boss activo en la partida.
+*
+* Como parámetro a la función tocarArpegio podemos pasar el valor bwr (ratio de ancho de banda) del
+* filtro para activarlo en mayor o menor medida. Este valor debe ser mayor que 0 y menor de 10, por
+* tanto, y para hacer más dinámica la música, lo calculamos en función del número de minibosses.
+* Así, usaremos el número de minibosses como valor bwr hasta un máximo de 5, a partir de ese valor
+* el efecto del filtro se vuelve demasiado agresivo.
+*/
+~cambioMinibosses = {
+    arg numBosses;
+
+    ~valorBwr = numBosses;
+
+    if(~valorBwr > 5){
+        ~valorBwr = 5;
+    };
+
+
+    case
+    { (numBosses > 0) && (~resonanciaActiva == false)}{
+
+        //Paramos la ejecución del patrón,
+        ~arpegio.stop;
+
+        //Volvemos a inicicializar el patron de los arpegios pasando el valor de bwr
+        ~prueba.tocarArpegio(~valorBwr);
+
+        //Reactivamos los arpegios
+        ~arpegio.play(~tGeneral, quant: 1);
+
+        //Por ultimo indicamos que la resonancia est activa
+        ~resonanciaActiva = true;
+    }
+    { (numBosses == 0) && (~resonanciaActiva == true)}{
+        //Paramos la ejecución del patrón,
+        ~arpegio.stop;
+
+        //Volvemos a inicicializar el patron de los arpegios. Al no pasar argumento, se
+        // usa por defecto el valor 0.01 de bwr para desactivar el filtro
+        ~prueba.tocarArpegio();
+
+        //Reactivamos los arpegios
+        ~arpegio.play(~tGeneral, quant: 1);
+
+        //Por ultimo indicamos que la resonancia est activa
+        ~resonanciaActiva = false;
+    };
+};
+
 /*
 * Manejador para la llamada de inicio de musica al comienzo del juego
 */
@@ -126,6 +179,9 @@ OSCdef.new(
         //Varible necesaria para gestionar los cambios de ritmo dinámicos
         ~rangoRimoPrevio = 0;
         ~rangoPrevioModo = 0;
+
+        //Variable necesaria para gestionar la activación dinámica del filtro de resonancia
+        ~resonanciaActiva = false;
 
         //Seleccionamos aleatoriamente una escala (do, re, mi, ... si)
         ~n = ['C', 'D', 'E', 'F', 'G', 'A', 'B'].choose;
@@ -253,6 +309,24 @@ OSCdef.new(
         ~melodias = ~melodias.add(~melodia.play(~tMelodia, quant: 4));
     },
     '/lvUp', //Mensaje a leer
+    nil,
+    57120  //Puerto para escuchar los mensajes (indicado en OSCHandler en Unity)
+);
+
+/*
+* Manejador para la llamada de cambio en la vida actual del jugador.
+* Usada para adaptar el modo de la secuencia de acordes entre mayor y menor de forma dinámica
+*/
+OSCdef.new(
+    \cambioMinibosses,             //Simbolo para identificar el manejador.
+    {arg msg;
+        [msg].postln;
+
+        //Extraemos el valor pasado por mensaje
+        ~numeroBosses = [msg][0][1].postln;
+        ~cambioMinibosses.value(~vidaActual);
+    },
+    '/cambioMinibosses', //Mensaje a leer
     nil,
     57120  //Puerto para escuchar los mensajes (indicado en OSCHandler en Unity)
 );

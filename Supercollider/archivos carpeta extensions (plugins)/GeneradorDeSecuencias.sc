@@ -396,4 +396,44 @@ GeneradorSecuencias{
 			secuenciaGenerada[i] = item.asSymbol;
 		};
 	}
+
+    cambiarModoSecuencia{
+
+        arg modo;
+
+		//Primero pasamos cada elemento a string para poder procesarlo como cadena de texto
+		secuenciaGenerada.do{
+			arg item, i;
+			//secuencia
+
+			secuenciaGenerada[i] = item.asString;
+		};
+
+		//Funcion que encapsula el cambio de grados por notas usando los diccionarios
+		~cambiarModo = {
+
+            arg m;
+            secuenciaGenerada.do{
+				arg item, i;
+
+                //Cambiamos en cada acorde el modo en funcion del argumento
+                if(m == 'M'){
+                    secuenciaGenerada[i] = secuenciaGenerada[i].replace("m", "M");
+                }{
+                    secuenciaGenerada[i] = secuenciaGenerada[i].replace("M", "m");
+                };
+			};
+		};
+
+		//aplicamos la funcion para transformar los acordes
+		~cambiarModo.value(modo);
+
+		//Finalmente volvemos a combertir los acordes en simbolos para que funcionenen en el sistema
+		secuenciaGenerada.do{
+			arg item, i;
+			//secuencia
+
+			secuenciaGenerada[i] = item.asSymbol;
+		};
+	}
 }

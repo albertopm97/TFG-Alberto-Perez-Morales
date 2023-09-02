@@ -172,8 +172,23 @@ C7b11	{0, 4, 7, 10, 17}"
 	inicializarSynths{
 	    (
 
+        /******-----MELODIAS--------********/
+
+       SynthDef(\melodia, {
+       arg freq = 440, dur = 0.25, amp = 0.3, waveform = 0;
+
+       var env = EnvGen.kr(Env.perc(0.01, 0.1), doneAction: 2);
+       var sound;
+
+       // Select waveform (0: Square, 1: Saw, 2: Triangle)
+       sound = SinOsc.ar(freq, 0, 0.3) * Pulse.ar(2 * freq, 0.2) * env * amp;
+
+       Out.ar(0, sound);
+       }).add;
+
+        /******-----ARPEGIOS--------********/
         SynthDef(\retro, {
-        arg freq = 440, dur = 0.25, amp = 0.5;
+        arg freq = 440, dur = 0.25, amp = 0.2, filterQ = 0.001, resonanceFreq = 440;
 
         var env = EnvGen.kr(Env([0, 1, 0], [0.01, 0.4]), doneAction: 2);
 
@@ -185,10 +200,12 @@ C7b11	{0, 4, 7, 10, 17}"
 
         var sound = bitCrushed * env;
 
-        sound = FreeVerb.ar(sound, 0.2, 0.8, 0.2);
+        Resonz.ar(sound, freq * resonanceFreq, filterQ);
+
         Out.ar(~bus, sound);
         }).add;
 
+        /******-----REVERB--------********/
         SynthDef.new(\reverb, {
 	    arg in=0, mix=0.08, out=0;
 	    var sig, wet;
@@ -203,7 +220,7 @@ C7b11	{0, 4, 7, 10, 17}"
         }).add;
 
 
-		/**-----PERCUSION---------**/
+		/******-----PERCUSION--------********/
 
 		SynthDef(\bombo, {
 			arg freqA=1000, freqB=100, freqC=30, freqDur1=0.03, freqDur2=1, freqC1=(-3),freqC2=1,
@@ -215,7 +232,7 @@ C7b11	{0, 4, 7, 10, 17}"
 			sig = sig * env;
 			sig = Pan2.ar(sig, pan, amp);
 
-            sig = FreeVerb.ar(sig, 0.2, 0.8, 0.2);
+            //sig = FreeVerb.ar(sig, 0.2, 0.8, 0.2);
             Out.ar(out, sig);
 		}).add;
 
@@ -236,10 +253,11 @@ C7b11	{0, 4, 7, 10, 17}"
             // Combine hit and body sounds
             sound = hit + body;
 
-            sound = FreeVerb.ar(sound, 0.2, 0.8, 0.2);
+            //sound = FreeVerb.ar(sound, 0.2, 0.8, 0.2);
             Out.ar(0, sound);
         }).add;
 
+        //FINALMENTE TOM NO SERÁ UTILIZADO
         SynthDef(\tom, {
             arg freq = 50, dur = 0.5, amp = 0.5;
 
@@ -298,29 +316,15 @@ C7b11	{0, 4, 7, 10, 17}"
 		~notasArpegios = ~notasArpegios ++ ~notasAcorde;
 	}
 
-	tocarArpegio {|vol = -9|
-		/*~notasAcorde = [];
-        ~duraciones = [];
-
-		(transp+structure+root).do{|i|
-			i.postln;
-			~notasAcorde = ~notasAcorde.add(i);
-		};
-
-        //Añadimos las mismas notas en orden inverso menos la primera y la ultima
-        ~notasInversas = ~notasAcorde.reverse;
-		~notasInversas.removeAt(0);
-		~notasInversas.removeAt(~notasInversas.size - 1);
-		~notasAcorde = ~notasAcorde ++ ~notasInversas;
-
-        //Finalmente damos valor al array de duraciones
-        ~duraciones = Array.fill(~notasAcorde.size, 1);*/
+	tocarArpegio {
+        arg filtroResonancia = 0.001;
 
         (
 			~arpegio = Pbindef(\armonia,
 			\type, \note,
 			\instrument, \retro,
-            \amp, 0.1,
+            \filterQ, filtroResonancia,
+            \amp, 0.05,
 			\midinote, Pseq(~notasArpegios, inf),
 			\dur, Pseq(~duraciones.normalizeSum * 2 * ~numAcordes, inf),
 			\out, 0
@@ -349,9 +353,8 @@ C7b11	{0, 4, 7, 10, 17}"
 
             ~patronTom = Pbindef(\patronTom,
                 \instrument, \tom,
-                //\freq, Prand([80, 100, 120, 140], inf),
-                \freq, Prand([50, 60, 80], inf),
-                \amp, Prand([0.001, 0.5], inf),
+                \freq, 50,
+                \amp, 0.05,
                 \dur, Pseq([Pseq([3/24],3), Pseq([1/16],12), 1], inf) * 4,
                 \atk, Pwhite(0.001, 0.1, inf),
                 \rel, Pwhite(0.01, 0.1, inf),
@@ -370,6 +373,28 @@ C7b11	{0, 4, 7, 10, 17}"
             \rel, Pwhite(0.15, 0.5, inf),
             \out, 0
             );
+        )
+	}
+
+    tocarMelodia{
+
+        (
+            ~posiblesFrasesMelodicas = [
+                [0, 2, 4, 5, 7, 9, 11], // Escala ascendente
+                [0, -2, -4, -5, -7, -9, -11], // Escala descendente
+                [0, 2, 4, 3, 7, 5, 9], // Tipo arpegio
+                [0, 2, 4, 0, 2, 4], // Patron repetitivo
+            ];
+            ~melodia = Pbind(
+            \instrument, \melodia,
+            \degree, Prand({ Pdup(Prand([1, 2, 3], inf), Prand(~posiblesFrasesMelodicas.choose, inf)) } ! 8, inf),
+            \dur, Prand([0.125, 0.25, 0.5], inf),
+            \amp, Prand([1, 1.3, 1.5], inf),
+            \legato, Prand([0.9, 0.8, 0.7], inf));
+
+            //HAY QUE SOLUCIONAR QUE SE ESCUCHA BAJITO LAS MELODIAS ALEATORIOAS (MIRAR FIN DE PRUEBA8BIT)
+            //POSIBLE USO DE Ppar
+            //Finalmente intentar usar el filtro de resonancia (ver telegram profesor)
         )
 	}
 
