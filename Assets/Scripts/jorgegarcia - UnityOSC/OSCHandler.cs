@@ -94,18 +94,8 @@ public class OSCHandler : MonoBehaviour
 	/// </summary>
 	public void Init()
     {
-        //Initialize OSC clients (transmitters)
-        //Example:		
-        //CreateClient("SuperCollider", IPAddress.Parse("127.0.0.1"), 5555);
-
-        //Initialize OSC servers (listeners)
-        //Example:
-
-        //CreateServer("AndroidPhone", 6666);
-
 
 		/*--------------------------------CODIGO TFG ------------------------------------------*/
-
 		//Creamos un cliente para comunicarnos con el servidor de supercollider 
         CreateClient("SuperCollider", IPAddress.Parse("127.0.0.1"), 57120);
     }

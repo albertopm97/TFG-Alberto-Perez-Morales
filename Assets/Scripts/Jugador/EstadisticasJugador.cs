@@ -210,6 +210,9 @@ public class EstadisticasJugador : MonoBehaviour
     {
         if (!GameManager.instancia.juegoFinalizado)
         {
+            //Mandamos mensaje de fin de música a supercollider
+            float finalizarMusica = 1.0f;
+            OSCHandler.Instance.SendMessageToClient("SuperCollider", "/finalizarMusica", finalizarMusica);
             GameManager.instancia.gameOver();
         }
     }

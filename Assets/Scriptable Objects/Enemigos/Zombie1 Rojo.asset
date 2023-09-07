@@ -15,3 +15,4 @@ MonoBehaviour:
   rapidez: 2
   vidaMaxima: 50
   damage: 20
+  esMiniboss: 1
