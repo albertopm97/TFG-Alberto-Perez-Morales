@@ -14,7 +14,7 @@ De entre todos los tipos de contenido posibles, uno de los menos explorados, y e
 Para la experimentación práctica de este trabajo, presentamos el proceso seguido para implementar un generador de música para un videojuego, usando para ello el entorno y el lenguaje proporcionados por el software de código abierto SuperCollider y el motor de videojuegos Unity. Para desarrollar dicho generador, en primer lugar, se ha implementado un grafo dirigido de transiciones entre acordes, gracias al cual es posible generar secuencias de acordes con sentido haciendo recorridos aleatorios. Después, se han definido sintetizadores y patrones de SuperCollider para la percusión, armonía y melodías y, finalmente, se han parametrizado ciertas variables del juego, como el número de enemigos o los puntos de salud del jugador, para conseguir una adaptación dinámica al estado de la partida.
 
 ##
-La memoria completa puede consultarse en: 
+La memoria completa puede consultarse en: https://github.com/albertopm97/TFG-Alberto-Perez-Morales/blob/main/Memoria/TFG_AlbertoPerezMorales.pdf
 
 
 
