@@ -27,7 +27,7 @@ PASOS A SEGUIR PARA EJECUTAR EL TRABAJO:
 
 2) Abrir el proyecto en Unity
 
-3)Abrir el archivo Supercollider/ManejadorMensajes.sc, iniciar el servidor en la pestaña Server y,
+3) Abrir el archivo Supercollider/ManejadorMensajes.sc, iniciar el servidor en la pestaña Server y,
 	poniendo el cursor en cualquier punto del archivo pulsar Ctrl + enter
 
 4) Pulsar el boton Play en Unity
