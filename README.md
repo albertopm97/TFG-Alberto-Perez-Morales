@@ -13,8 +13,21 @@ De entre todos los tipos de contenido posibles, uno de los menos explorados, y e
 
 Para la experimentación práctica de este trabajo, presentamos el proceso seguido para implementar un generador de música para un videojuego, usando para ello el entorno y el lenguaje proporcionados por el software de código abierto SuperCollider y el motor de videojuegos Unity. Para desarrollar dicho generador, en primer lugar, se ha implementado un grafo dirigido de transiciones entre acordes, gracias al cual es posible generar secuencias de acordes con sentido haciendo recorridos aleatorios. Después, se han definido sintetizadores y patrones de SuperCollider para la percusión, armonía y melodías y, finalmente, se han parametrizado ciertas variables del juego, como el número de enemigos o los puntos de salud del jugador, para conseguir una adaptación dinámica al estado de la partida.
 
-##
+## Memoria
 La memoria completa puede consultarse en: https://github.com/albertopm97/TFG-Alberto-Perez-Morales/blob/main/Memoria/TFG_AlbertoPerezMorales.pdf
 
 
+## Instrucciones de uso
+REQUISITOS: Tener una versión de Unity igual o posterior a la 2021.3.22f1 y SuperCollider instalados
 
+PASOS A SEGUIR PARA EJECUTAR EL TRABAJO:
+
+1) Colocar los archivos situados en la carpeta Supercollider/archivos carpeta extensions (plugins) en
+	C:\Users\x\AppData\Local\SuperCollider\Extensions, siendo x el nombre del usuario
+
+2) Abrir el proyecto en Unity
+
+3)Abrir el archivo Supercollider/ManejadorMensajes.sc, iniciar el servidor en la pestaña Server y,
+	poniendo el cursor en cualquier punto del archivo pulsar Ctrl + enter
+
+4) Pulsar el boton Play en Unity
